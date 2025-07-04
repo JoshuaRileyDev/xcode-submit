@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { addTeam, listTeams, initializeStorage } from './commands/teams.js';
+import { buildAndExport } from './commands/build.js';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -47,6 +48,21 @@ program
       await listTeams();
     } catch (error) {
       console.error(chalk.red('Error listing teams:'), error);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('build')
+  .description('Build and export Xcode project for App Store submission')
+  .option('-t, --team <teamName>', 'team reference name')
+  .option('-s, --scheme <schemeName>', 'Xcode scheme name')
+  .action(async (options) => {
+    try {
+      await initializeStorage();
+      await buildAndExport(options);
+    } catch (error) {
+      console.error(chalk.red('Error building project:'), error);
       process.exit(1);
     }
   });

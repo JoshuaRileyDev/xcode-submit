@@ -14,7 +14,13 @@
     "format": "prettier --write src/**/*.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["xcode", "app-store-connect", "cli", "ios", "macos"],
+  "keywords": [
+    "xcode",
+    "app-store-connect",
+    "cli",
+    "ios",
+    "macos"
+  ],
   "author": "",
   "license": "ISC",
   "description": "CLI tool for managing App Store Connect API teams",
@@ -33,6 +39,7 @@
     "chalk": "^5.4.1",
     "commander": "^14.0.0",
     "fs-extra": "^11.3.0",
+    "glob": "^11.0.3",
     "inquirer": "^12.7.0"
   }
 }

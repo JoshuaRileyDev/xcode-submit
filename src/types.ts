@@ -19,3 +19,8 @@ export interface AddTeamOptions {
   keyPath?: string;
   nonInteractive?: boolean;
 }
+
+export interface BuildOptions {
+  team?: string;
+  scheme?: string;
+}
