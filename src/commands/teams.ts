@@ -41,9 +41,17 @@ export async function addTeam(options: AddTeamOptions): Promise<void> {
         when: !keyPath,
         validate: async (input: string) => {
           if (!input.trim()) return 'Key path is required';
-          const expandedPath = path.resolve(input.replace(/^~/, process.env.HOME || ''));
+          
+          // Handle tilde expansion and resolve path
+          let expandedPath = input.trim();
+          if (expandedPath.startsWith('~')) {
+            expandedPath = expandedPath.replace(/^~/, process.env.HOME || '');
+          }
+          expandedPath = path.resolve(expandedPath);
+          
           const isValid = await validateKeyPath(expandedPath);
-          return isValid || 'Invalid .p8 file path';
+          
+          return isValid || `Invalid .p8 file path: ${expandedPath}`;
         }
       }
     ]);
