@@ -51,6 +51,13 @@ export async function addTeam(options: AddTeamOptions): Promise<void> {
           
           // Handle tilde expansion and resolve path
           let expandedPath = input.trim();
+          
+          // Remove surrounding quotes if present
+          if ((expandedPath.startsWith('"') && expandedPath.endsWith('"')) ||
+              (expandedPath.startsWith("'") && expandedPath.endsWith("'"))) {
+            expandedPath = expandedPath.slice(1, -1);
+          }
+          
           if (expandedPath.startsWith('~')) {
             expandedPath = expandedPath.replace(/^~/, process.env.HOME || '');
           }
@@ -75,7 +82,20 @@ export async function addTeam(options: AddTeamOptions): Promise<void> {
     process.exit(1);
   }
 
-  const expandedKeyPath = path.resolve(keyPath.replace(/^~/, process.env.HOME || ''));
+  // Clean up the keyPath - remove quotes and handle tilde expansion
+  let cleanKeyPath = keyPath.trim();
+  
+  // Remove surrounding quotes if present
+  if ((cleanKeyPath.startsWith('"') && cleanKeyPath.endsWith('"')) ||
+      (cleanKeyPath.startsWith("'") && cleanKeyPath.endsWith("'"))) {
+    cleanKeyPath = cleanKeyPath.slice(1, -1);
+  }
+  
+  if (cleanKeyPath.startsWith('~')) {
+    cleanKeyPath = cleanKeyPath.replace(/^~/, process.env.HOME || '');
+  }
+  
+  const expandedKeyPath = path.resolve(cleanKeyPath);
   
   if (!(await validateKeyPath(expandedKeyPath))) {
     console.error(chalk.red('Error: Invalid .p8 file path'));
