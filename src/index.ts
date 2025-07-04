@@ -24,6 +24,7 @@ program
   .description('Add a new team')
   .option('-n, --name <name>', 'team reference name')
   .option('-i, --issuer-id <issuerId>', 'issuer ID')
+  .option('--key-id <keyId>', 'key ID')
   .option('-k, --key-path <keyPath>', 'path to .p8 key file')
   .option('--non-interactive', 'run in non-interactive mode')
   .action(async (options) => {

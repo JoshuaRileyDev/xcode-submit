@@ -9,7 +9,7 @@ export async function initializeStorage(): Promise<void> {
 }
 
 export async function addTeam(options: AddTeamOptions): Promise<void> {
-  let { name, issuerId, keyPath, nonInteractive } = options;
+  let { name, issuerId, keyId, keyPath, nonInteractive } = options;
 
   if (!nonInteractive) {
     const answers = await inquirer.prompt([
@@ -29,6 +29,13 @@ export async function addTeam(options: AddTeamOptions): Promise<void> {
       },
       {
         type: 'input',
+        name: 'keyId',
+        message: 'Key ID:',
+        when: !keyId,
+        validate: (input: string) => input.trim() !== '' || 'Key ID is required'
+      },
+      {
+        type: 'input',
         name: 'keyPath',
         message: 'Path to .p8 key file:',
         when: !keyPath,
@@ -43,11 +50,12 @@ export async function addTeam(options: AddTeamOptions): Promise<void> {
 
     name = name || answers.name;
     issuerId = issuerId || answers.issuerId;
+    keyId = keyId || answers.keyId;
     keyPath = keyPath || answers.keyPath;
   }
 
-  if (!name || !issuerId || !keyPath) {
-    console.error(chalk.red('Error: All fields are required (name, issuer-id, key-path)'));
+  if (!name || !issuerId || !keyId || !keyPath) {
+    console.error(chalk.red('Error: All fields are required (name, issuer-id, key-id, key-path)'));
     process.exit(1);
   }
 
@@ -68,6 +76,7 @@ export async function addTeam(options: AddTeamOptions): Promise<void> {
   const newTeam: Team = {
     name,
     issuerId,
+    keyId,
     keyPath: expandedKeyPath,
     createdAt: new Date().toISOString()
   };
@@ -92,6 +101,7 @@ export async function listTeams(): Promise<void> {
   config.teams.forEach((team, index) => {
     console.log(chalk.cyan(`${index + 1}. ${team.name}`));
     console.log(chalk.gray(`   Issuer ID: ${team.issuerId}`));
+    console.log(chalk.gray(`   Key ID: ${team.keyId}`));
     console.log(chalk.gray(`   Key Path: ${team.keyPath}`));
     console.log(chalk.gray(`   Created: ${new Date(team.createdAt).toLocaleString()}`));
     console.log();
