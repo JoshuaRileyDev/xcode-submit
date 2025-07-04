@@ -1,8 +1,8 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import path from 'path';
-import { Team, AddTeamOptions } from '../types';
-import { initializeStorage as initStorage, loadConfig, saveConfig, validateKeyPath } from '../utils/storage';
+import { Team, AddTeamOptions } from '../types.js';
+import { initializeStorage as initStorage, loadConfig, saveConfig, validateKeyPath } from '../utils/storage.js';
 
 export async function initializeStorage(): Promise<void> {
   await initStorage();

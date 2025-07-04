@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import os from 'os';
-import { Config } from '../types';
+import { Config } from '../types.js';
 
 const CONFIG_DIR = path.join(os.homedir(), '.xcode-submit');
 const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');

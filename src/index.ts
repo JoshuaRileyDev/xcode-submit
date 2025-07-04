@@ -2,8 +2,15 @@
 
 import { Command } from 'commander';
 import chalk from 'chalk';
-import { addTeam, listTeams, initializeStorage } from './commands/teams';
-import { version } from '../package.json';
+import { addTeam, listTeams, initializeStorage } from './commands/teams.js';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const packageJson = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf8'));
+const version = packageJson.version;
 
 const program = new Command();
 
