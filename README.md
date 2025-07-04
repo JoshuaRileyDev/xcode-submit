@@ -19,7 +19,7 @@ xcode-submit add
 ### Add a Team (Non-Interactive Mode)
 
 ```bash
-xcode-submit add --name "My Team" --issuer-id "your-issuer-id" --key-id "your-key-id" --key-path "~/path/to/key.p8" --non-interactive
+xcode-submit add --name "My Team" --issuer-id "your-issuer-id" --team-id "your-team-id" --key-id "your-key-id" --key-path "~/path/to/key.p8" --non-interactive
 ```
 
 ### List Teams
@@ -35,6 +35,7 @@ Team configurations are stored in `~/.xcode-submit/config.json`.
 Each team includes:
 - Reference name
 - Issuer ID (from App Store Connect)
+- Team ID (from App Store Connect)
 - Key ID (from App Store Connect API key)
 - Path to .p8 API key file
 

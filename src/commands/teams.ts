@@ -9,7 +9,7 @@ export async function initializeStorage(): Promise<void> {
 }
 
 export async function addTeam(options: AddTeamOptions): Promise<void> {
-  let { name, issuerId, keyId, keyPath, nonInteractive } = options;
+  let { name, issuerId, teamId, keyId, keyPath, nonInteractive } = options;
 
   if (!nonInteractive) {
     const answers = await inquirer.prompt([
@@ -26,6 +26,13 @@ export async function addTeam(options: AddTeamOptions): Promise<void> {
         message: 'Issuer ID:',
         when: !issuerId,
         validate: (input: string) => input.trim() !== '' || 'Issuer ID is required'
+      },
+      {
+        type: 'input',
+        name: 'teamId',
+        message: 'Team ID:',
+        when: !teamId,
+        validate: (input: string) => input.trim() !== '' || 'Team ID is required'
       },
       {
         type: 'input',
@@ -58,12 +65,13 @@ export async function addTeam(options: AddTeamOptions): Promise<void> {
 
     name = name || answers.name;
     issuerId = issuerId || answers.issuerId;
+    teamId = teamId || answers.teamId;
     keyId = keyId || answers.keyId;
     keyPath = keyPath || answers.keyPath;
   }
 
-  if (!name || !issuerId || !keyId || !keyPath) {
-    console.error(chalk.red('Error: All fields are required (name, issuer-id, key-id, key-path)'));
+  if (!name || !issuerId || !teamId || !keyId || !keyPath) {
+    console.error(chalk.red('Error: All fields are required (name, issuer-id, team-id, key-id, key-path)'));
     process.exit(1);
   }
 
@@ -84,6 +92,7 @@ export async function addTeam(options: AddTeamOptions): Promise<void> {
   const newTeam: Team = {
     name,
     issuerId,
+    teamId,
     keyId,
     keyPath: expandedKeyPath,
     createdAt: new Date().toISOString()
@@ -109,6 +118,7 @@ export async function listTeams(): Promise<void> {
   config.teams.forEach((team, index) => {
     console.log(chalk.cyan(`${index + 1}. ${team.name}`));
     console.log(chalk.gray(`   Issuer ID: ${team.issuerId}`));
+    console.log(chalk.gray(`   Team ID: ${team.teamId}`));
     console.log(chalk.gray(`   Key ID: ${team.keyId}`));
     console.log(chalk.gray(`   Key Path: ${team.keyPath}`));
     console.log(chalk.gray(`   Created: ${new Date(team.createdAt).toLocaleString()}`));
